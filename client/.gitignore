@@ -8,7 +8,7 @@ logs
 **/*.backup.*
 **/*.back.*
 
-dist/*
+dist
 
 node_modules
 bower_components
