@@ -10,13 +10,14 @@
     "strict": true,
     "resolveJsonModule": true,
     "baseUrl": ".",
+    "types": ["@emotion/react/types/css-prop"],
     "paths": {
-      "@hooks/*": ["hooks/*"],
-      "@components/*": ["components/*"],
-      "@layouts/*": ["layouts/*"],
-      "@pages/*": ["pages/*"],
-      "@utils/*": ["utils/*"],
-      "@typings/*": ["typings/*"]
+      "hooks/*": ["hooks/*"],
+      "components/*": ["components/*"],
+      "layouts/*": ["layouts/*"],
+      "pages/*": ["pages/*"],
+      "utils/*": ["utils/*"],
+      "typings/*": ["typings/*"]
     }
   }
 }

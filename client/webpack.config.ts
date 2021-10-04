@@ -46,6 +46,7 @@ const config: Configuration = {
             ],
             '@babel/preset-react',
             '@babel/preset-typescript',
+            '@emotion/babel-preset-css-prop',
           ],
           env: {
             development: {
@@ -83,12 +84,12 @@ const config: Configuration = {
     port: 3090,
     devMiddleware: { publicPath: '/dist/' },
     static: { directory: path.resolve(__dirname) },
-    // proxy: {
-    //   '/api/': {
-    //     target: 'http://localhost:3095', // 주소를 3095로 변경해서 요청하겠다 (현재 client dev서버는 3090 // cors이슈)
-    //     changeOrigin: true,
-    //   },
-    // },
+    proxy: {
+      '/api/': {
+        target: 'http://localhost:3095', // 주소를 3095로 변경해서 요청하겠다 (현재 client dev서버는 3090 // cors이슈)
+        changeOrigin: true,
+      },
+    },
   },
 }
 
