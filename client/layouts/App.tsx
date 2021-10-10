@@ -4,6 +4,8 @@ import { css } from '@emotion/core'
 import { Switch, Route, Redirect } from 'react-router-dom'
 
 const Signup = loadable(() => import('pages/Signup'))
+const Login = loadable(() => import('pages/Login'))
+const Chatspace = loadable(() => import('layouts/Chatspace'))
 
 const signupBlock = css`
   display: flex;
@@ -17,8 +19,12 @@ const App = () => {
   return (
     <div css={signupBlock}>
       <Switch>
-        <Redirect exact path="/" to="/signup" />
+        <Route exact path="/">
+          <Redirect to="/login" />
+        </Route>
+        <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
+        <Route path="/chatspace" component={Chatspace} />
       </Switch>
     </div>
   )
