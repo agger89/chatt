@@ -1,15 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useParams } from 'react-router'
+import { Redirect } from 'react-router-dom'
 import axios from 'axios'
 import useSWR from 'swr'
 import fetcher from 'utils/fetch'
-import { Redirect } from 'react-router-dom'
 import { css } from '@emotion/core'
 import { Dialog } from '@material-ui/core'
 import gravatar from 'gravatar'
+import { ChatUserList } from 'components/ChatUserList'
 
 const rootStyle = css`
   width: 1400px;
   height: 880px;
+  display: flex;
   background-color: #282C44;
   border-radius: 20px;
 `
@@ -42,14 +45,14 @@ const dialogStyle = css`
   text-align: center;
 `
 
-const nicknameStyle = css`
+const dialogNicknameStyle = css`
   display: inline-block;
-  margin-top: 10px;
+  margin-top: 12px;
   color: #fff;
 `
 
 const logoutTextStyle = css`
-  padding: 10px 0;
+  padding: 16px 0;
   background-color: #282C44;
   border: 0;
   color: #fff;
@@ -57,7 +60,7 @@ const logoutTextStyle = css`
 `
 
 const Chatspace = () => {
-  const { data: userData, mutate } = useSWR<any>('/api/users', fetcher)
+  const { data: user, mutate } = useSWR<any>('/api/users', fetcher)
   const [dialogIsOpen, setDialogIsOpen] = useState(false)
 
   const handleLogOut = () => {
@@ -80,28 +83,23 @@ const Chatspace = () => {
     setDialogIsOpen(false)
   }
 
-  console.log('userData', userData)
-
-  if (userData === false) {
-    return <Redirect to="/login" />
-  }
-
   return (
     <div css={rootStyle}>
       <div css={profileBarStyle}>
         <span css={profileStyle} onClick={handleDialogOpen}>
-          <img css={profileImageStyle} src={gravatar.url(userData?.email, { s: '36px', d: 'retro' })} alt={userData?.nickname} />
+          <img css={profileImageStyle} src={gravatar.url(user?.email, { s: '36px', d: 'retro' })} alt={user?.nickname} />
         </span>
         <Dialog onClose={handleDialogClose} open={dialogIsOpen}>
           <div css={dialogStyle}>
-            <img css={profileImageStyle} src={gravatar.url(userData?.email, { s: '52px', d: 'retro' })} alt={userData?.nickname} />
+            <img css={profileImageStyle} src={gravatar.url(user?.email, { s: '52px', d: 'retro' })} alt={user?.nickname} />
             <div>
-              <span css={nicknameStyle} id="profile-name">{userData?.nickname}</span>
+              <span css={dialogNicknameStyle} id="profile-name">{user?.nickname}</span>
             </div>
           </div>
           <button css={logoutTextStyle} onClick={handleLogOut}>로그아웃</button>
         </Dialog>
       </div>
+      <ChatUserList user={user} />
     </div>
   )
 }
