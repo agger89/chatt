@@ -154,16 +154,19 @@ const Login: FC = () => {
       return false
     }
 
-    axios.post('/api/users/login', {
-      email, password
-    })
+    axios
+      .post(
+        '/api/users/login',
+        { email, password },
+        {
+          withCredentials: true,
+        },
+      )
       .then((response: any) => {
         mutate()
         setSnackbarOpen(true)
       })
       .catch((error: any) => {
-        console.log('response', error.response)
-        console.log('data', error.response.data)
         setLogInErrorMessage(error.response.data)
       })
       .finally(() => { })
