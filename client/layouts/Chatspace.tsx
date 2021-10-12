@@ -8,6 +8,7 @@ import { css } from '@emotion/core'
 import { Dialog } from '@material-ui/core'
 import gravatar from 'gravatar'
 import { ChatUserList } from 'components/ChatUserList'
+import useSocket from 'hooks/useSocket'
 
 const rootStyle = css`
   width: 1400px;
@@ -60,7 +61,10 @@ const logoutTextStyle = css`
 `
 
 const Chatspace = () => {
+  const workspace = 'sleact'
+  const [socket, disconnectSocket] = useSocket(workspace);
   const { data: user, mutate } = useSWR<any>('/api/users', fetcher)
+  const { data: channelData } = useSWR<any[]>(user ? `/api/workspaces/${workspace}/channels` : null, fetcher);
   const [dialogIsOpen, setDialogIsOpen] = useState(false)
 
   const handleLogOut = () => {
@@ -83,6 +87,22 @@ const Chatspace = () => {
     setDialogIsOpen(false)
   }
 
+  useEffect(() => {
+    return () => {
+      console.info('disconnect socket', workspace)
+      disconnectSocket()
+    }
+  }, [disconnectSocket, workspace])
+
+  useEffect(() => {
+    if (channelData && user) {
+      console.info('로그인하자', socket)
+      socket?.emit('login', { id: user?.id, channels: channelData.map((v) => v.id) })
+    }
+  }, [socket, user, channelData])
+
+  console.log('user', user)
+  console.log('channelData', channelData)
   return (
     <div css={rootStyle}>
       <div css={profileBarStyle}>
