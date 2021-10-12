@@ -173,7 +173,7 @@ const Login: FC = () => {
   }
 
   if (!error && userData) {
-    return <Redirect to="/chatspace" />
+    return <Redirect to="/workspace/sleact" />
   }
 
   const handleSnackbarClose = () => {

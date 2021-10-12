@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router'
-import { Redirect } from 'react-router-dom'
+import { Link, Redirect, Route, Switch } from 'react-router-dom'
 import axios from 'axios'
 import useSWR from 'swr'
 import fetcher from 'utils/fetch'
@@ -8,6 +8,7 @@ import { css } from '@emotion/core'
 import { Dialog } from '@material-ui/core'
 import gravatar from 'gravatar'
 import { ChatUserList } from 'components/ChatUserList'
+import { DirectMessage } from 'components/DirectMessage'
 import useSocket from 'hooks/useSocket'
 
 const rootStyle = css`
@@ -103,6 +104,11 @@ const Chatspace = () => {
 
   console.log('user', user)
   console.log('channelData', channelData)
+
+  if (user === false) {
+    return <Redirect to="/login" />;
+  }
+
   return (
     <div css={rootStyle}>
       <div css={profileBarStyle}>
@@ -120,6 +126,7 @@ const Chatspace = () => {
         </Dialog>
       </div>
       <ChatUserList user={user} />
+      <Route path="/workspace/:workspace/dm/:id" component={DirectMessage} />
     </div>
   )
 }

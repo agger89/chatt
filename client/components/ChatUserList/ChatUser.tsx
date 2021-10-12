@@ -91,7 +91,6 @@ const ChatUser = ({ chatUser }: any) => {
           </span>
         </span>
       </li>
-
     </NavLink>
   )
 }
