@@ -8,8 +8,8 @@ const rootStyle = css`
   display: flex;
   justify-content: center;
   width: 370px;
-  border-right: 4px solid #2B2F49;
-  padding-top: 60px;
+  padding: 60px 28px;
+  border-right: 2px solid #2E334D;
   ul {
     padding: 0;
   }

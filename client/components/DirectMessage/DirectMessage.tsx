@@ -9,11 +9,10 @@ import useSocket from 'hooks/useSocket'
 import fetcher from 'utils/fetch'
 import buildSection from 'utils/buildSection'
 import { ChatList } from 'components/ChatList'
+import Header from './Header'
 
 const rootStyle = css`
-`
-
-const headerStyle = css`
+  width: 100%;
 `
 
 
@@ -22,7 +21,7 @@ const DirectMessage: FC = () => {
   const { workspace, id } = useParams<{ workspace: string; id: string }>()
   const [socket] = useSocket(workspace)
   const { data: myData } = useSWR<any>('/api/users', fetcher)
-  const { data: userData } = useSWR<any>(`/api/workspaces/${workspace}/users/${id}`, fetcher)
+  const { data: user } = useSWR<any>(`/api/workspaces/${workspace}/users/${id}`, fetcher)
   const {
     data: chatData,
     mutate: mutateChat,
@@ -41,10 +40,7 @@ const DirectMessage: FC = () => {
 
   return (
     <div css={rootStyle}>
-      <div css={headerStyle}>
-        <img src={gravatar.url(userData?.email, { s: '24px', d: 'retro' })} alt={userData?.nickname} />
-        <span>{userData?.nickname}</span>
-      </div>
+      <Header user={user} />
       <ChatList
         chatSections={chatSections}
       />
