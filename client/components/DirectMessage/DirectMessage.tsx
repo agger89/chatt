@@ -3,18 +3,20 @@ import { useParams } from 'react-router'
 import axios from 'axios'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
-import gravatar from 'gravatar'
 import { css } from '@emotion/core'
 import useSocket from 'hooks/useSocket'
 import fetcher from 'utils/fetch'
 import buildSection from 'utils/buildSection'
 import { ChatList } from 'components/ChatList'
+import { ChatInput } from 'components/ChatInput'
 import Header from './Header'
 
 const rootStyle = css`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 100%;
 `
-
 
 const PAGE_SIZE = 20
 const DirectMessage: FC = () => {
@@ -44,6 +46,7 @@ const DirectMessage: FC = () => {
       <ChatList
         chatSections={chatSections}
       />
+      <ChatInput />
     </div>
   )
 }

@@ -32,7 +32,6 @@ interface ChatUserProps {
 const ChatUser: FC<ChatUserProps> = ({ chatUser }) => {
   const { workspace } = useParams<{ workspace: string; channel: string }>();
 
-  console.log('workspace11', workspace)
   return (
     <NavLink key={chatUser.id} css={rootStyle} activeClassName="selected" to={`/workspace/${workspace}/dm/${chatUser.id}`}>
       <li css={chatUserListItemStyle} key={chatUser.id}>

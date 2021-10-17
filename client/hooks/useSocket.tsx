@@ -8,7 +8,6 @@ const backUrl = process.env.NODE_ENV === 'production' ? 'http://3.34.139.72:3095
 const sockets: { [key: string]: Socket } = {}
 
 const useSocket = (workspace?: string): [Socket | undefined, () => void] => {
-  console.log('workspace', workspace)
   const disconnect = useCallback(() => {
     if (workspace && sockets[workspace]) {
       sockets[workspace].disconnect()
@@ -24,7 +23,6 @@ const useSocket = (workspace?: string): [Socket | undefined, () => void] => {
     sockets[workspace] = io(`${backUrl}/ws-${workspace}`, {
       transports: ['websocket'],
     })
-    console.info('create socket', workspace, sockets[workspace])
   }
 
   return [sockets[workspace], disconnect]

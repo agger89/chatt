@@ -90,20 +90,16 @@ const Chatspace = () => {
 
   useEffect(() => {
     return () => {
-      console.info('disconnect socket', workspace)
       disconnectSocket()
     }
   }, [disconnectSocket, workspace])
 
   useEffect(() => {
     if (channelData && user) {
-      console.info('로그인하자', socket)
       socket?.emit('login', { id: user?.id, channels: channelData.map((v) => v.id) })
     }
   }, [socket, user, channelData])
 
-  console.log('user', user)
-  console.log('channelData', channelData)
 
   if (user === false) {
     return <Redirect to="/login" />;

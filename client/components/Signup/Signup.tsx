@@ -176,11 +176,9 @@ const Signup: FC = () => {
       email, nickname, password
     })
       .then((response: any) => {
-        console.log(response)
         setSnackbarOpen(true)
       })
       .catch((error: any) => {
-        console.log(error)
         emailRef.current?.focus()
         setAlreadyUser(true)
         setSnackbarOpen(true)
