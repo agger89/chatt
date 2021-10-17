@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
-import useSWR from 'swr'
+import React, { FC } from 'react'
+import { useParams } from 'react-router'
+import { NavLink } from 'react-router-dom'
 import { css } from '@emotion/core'
-import gravatar from 'gravatar'
-import fetcher from 'utils/fetch'
+import ChattProfile from 'components/ChattProfile'
 
 const rootStyle = css`
   text-decoration: none;
@@ -14,16 +13,7 @@ const rootStyle = css`
   }
 `
 
-const profileImageStyle = css`
-  border-radius: 50%;
-`
-
 const chatUserListItemStyle = css`
-  list-style: none;
-  margin-bottom: 12px;
-`
-
-const chatUserProfileStyle = css`
   display: flex;
   align-items: center;
   width: 310px;
@@ -31,65 +21,22 @@ const chatUserProfileStyle = css`
   padding: 20px 16px;
   background-color: #2E334D;
   border-radius: 10px;
+  list-style: none;
+  margin-bottom: 12px;
 `
 
-const profileImageWrapStyle = css`
-  position: relative;
-`
+interface ChatUserProps {
+  chatUser: any
+}
 
-const isOnlineStyle = css`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: -8px;
-  display: block;
-  width: 12px;
-  height: 12px;
-  background-color: #14B65C;
-  border: 2px solid #2E334D;
-  border-radius: 50%;
-`
+const ChatUser: FC<ChatUserProps> = ({ chatUser }) => {
+  const { workspace } = useParams<{ workspace: string; channel: string }>();
 
-const chatUserNicknameStyle = css`
-  display: flex;
-  flex-direction: column;
-  margin-left: 10px;
-  font-family: monospace;
-`
-
-const nicknameStyle = css`
-  font-size: 18px;
-  font-weight: 600;
-  color: #fff;
-`
-
-const lastCommentStyle = css`
-  color: #666B85;
-`
-
-const ChatUser = ({ chatUser }: any) => {
-  const workspace = 'sleact'
-
-  const { data: userData } = useSWR<any>('/api/users', fetcher, {
-    dedupingInterval: 2000,
-  })
-
+  console.log('workspace11', workspace)
   return (
     <NavLink key={chatUser.id} css={rootStyle} activeClassName="selected" to={`/workspace/${workspace}/dm/${chatUser.id}`}>
       <li css={chatUserListItemStyle} key={chatUser.id}>
-        <span css={chatUserProfileStyle}>
-          <span css={profileImageWrapStyle}>
-            <img css={profileImageStyle} src={gravatar.url(chatUser?.email, { s: '40px', d: 'retro' })} alt={chatUser?.nickname} />
-            <span css={isOnlineStyle} />
-          </span>
-          <span css={chatUserNicknameStyle}>
-            <span css={nicknameStyle}>
-              {chatUser.nickname}
-              {chatUser.id === userData?.id && <span>이거나야</span>}
-            </span>
-            <span css={lastCommentStyle}>last comment area</span>
-          </span>
-        </span>
+        <ChattProfile user={chatUser} />
       </li>
     </NavLink>
   )

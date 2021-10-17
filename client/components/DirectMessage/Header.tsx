@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import { css } from '@emotion/core'
 import ProfileImage from 'components/ProfileImage'
+import ChattProfile from 'components/ChattProfile'
 
 const rootStyle = css`
   padding: 40px 34px 20px;
@@ -15,10 +16,7 @@ const Header: FC<HeaderProps> = ({ user }) => {
 
   return (
     <div css={rootStyle}>
-      <ProfileImage user={{
-        email: user?.email, nickname: user?.nickname,
-      }} />
-      <span>{user?.nickname}</span>
+      <ChattProfile user={user} />
     </div>
   )
 }

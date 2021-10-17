@@ -1,4 +1,4 @@
-import React, { FC, RefObject, useCallback } from 'react'
+import React, { FC } from 'react'
 
 interface ChatListProps {
   chatSections: { [key: string]: (any | any)[] };
@@ -6,6 +6,7 @@ interface ChatListProps {
 
 const ChatList: FC<ChatListProps> = ({ chatSections }) => {
 
+  console.log('chatSections', chatSections)
   return (
     <>
       {Object.entries(chatSections).map(([date, chats]) => {
