@@ -24,11 +24,10 @@ const profileBarStyle = css`
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  width: 86px;
+  width: 90px;
   height: 100%;
   background-color: #2E334D;
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
+  border-radius: 20px;
 `
 
 const profileStyle = css`

@@ -1,27 +1,49 @@
 import React, { FC } from 'react'
+import { css } from '@emotion/core'
+import Chat from './Chat'
+
+const rootStyle = css`
+  margin: 10px 36px;
+`
+
+const dateBlockStyle = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2px;
+  background-color: #2E334D;
+`
+
+const dateStyle = css`
+  padding: 0 20px;
+  background-color: #282C44;
+  font-family: monospace;
+  font-weight: 600;
+  font-size: 14px;
+  color: #666B85;
+`
 
 interface ChatListProps {
-  chatSections: { [key: string]: (any | any)[] };
+  chatSections: { [key: string]: (any | any)[] }
 }
 
 const ChatList: FC<ChatListProps> = ({ chatSections }) => {
 
-  console.log('chatSections', chatSections)
   return (
-    <>
+    <div css={rootStyle}>
       {Object.entries(chatSections).map(([date, chats]) => {
         return (
           <div className={`section-${date}`} key={date}>
-            <div>
-              <button>{date}</button>
+            <div css={dateBlockStyle}>
+              <span css={dateStyle}>{date}</span>
             </div>
             {chats.map((chat) => (
-              <div>{chat}</div>
+              <Chat chat={chat} />
             ))}
           </div>
         )
       })}
-    </>
+    </div>
   )
 }
 

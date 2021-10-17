@@ -13,12 +13,13 @@ interface User {
 
 interface ProfileImageProps {
   user: User
+  size?: string
 }
 
-const ProfileImage: FC<ProfileImageProps> = ({ user }) => {
+const ProfileImage: FC<ProfileImageProps> = ({ user, size }) => {
 
   return (
-    <img css={rootStyle} src={gravatar.url(user?.email, { s: '40px', d: 'retro' })} alt={user?.nickname} />
+    <img css={rootStyle} src={gravatar.url(user?.email, { s: size ?? '40px', d: 'retro' })} alt={user?.nickname} />
   )
 }
 
