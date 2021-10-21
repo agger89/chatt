@@ -1,4 +1,6 @@
 import React, { FC, memo, useMemo } from 'react'
+import useSWR from 'swr'
+import fetcher from 'utils/fetch'
 import { css } from '@emotion/core'
 import { Link, useParams } from 'react-router-dom'
 import dayjs from 'dayjs'
@@ -31,17 +33,18 @@ const contentStyle = css`
 
 interface ChatProps {
   chat: any
+  senderID: string
 }
 
-const Chat: FC<ChatProps> = ({ chat }) => {
+const Chat: FC<ChatProps> = ({ chat, senderID }) => {
   const { workspace } = useParams<{ workspace: string; channel: string }>()
-  const user = 'Sender' in chat ? chat.Sender : chat.User
-  console.log('chat', chat)
-  console.log('user', user)
-  console.log('workspace', workspace)
+  const { data: myData } = useSWR<any>('/api/users', fetcher)
+  const user = chat.Sender
+
+  const me = myData.id === senderID
 
   return (
-    <div css={rootStyle}>
+    <div css={rootStyle} style={{ justifyContent: !me ? 'flex-end' : 'initial' }}>
       <div css={profileBlockStyle}>
         <ProfileImage user={{
           email: user?.email, nickname: user?.nickname,
@@ -52,7 +55,7 @@ const Chat: FC<ChatProps> = ({ chat }) => {
           <span>{user.nickname},</span>{" "}
           <span>{dayjs(chat.createdAt).format('h:mm A')}</span>
         </div>
-        <p css={contentStyle}>{chat.content}</p>
+        <p css={contentStyle} style={{ backgroundColor: !me ? '#476EEE' : '#2E334D' }}>{chat.content}</p>
       </div>
     </div>
   );

@@ -5,10 +5,14 @@ import { css } from '@emotion/core'
 import ChattProfile from 'components/ChattProfile'
 
 const rootStyle = css`
+  display: block;
   text-decoration: none;
   &.selected {
-    li > span {
+    li  {
       background-color: #476EEE;
+    }
+    * {
+      color: #fff;
     }
   }
 `

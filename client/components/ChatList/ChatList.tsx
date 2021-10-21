@@ -37,8 +37,8 @@ const ChatList: FC<ChatListProps> = ({ chatSections }) => {
             <div css={dateBlockStyle}>
               <span css={dateStyle}>{date}</span>
             </div>
-            {chats.map((chat) => (
-              <Chat chat={chat} />
+            {chats.map((chat, idx) => (
+              <Chat chat={chat} senderID={chat.SenderId} key={idx} />
             ))}
           </div>
         )
