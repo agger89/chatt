@@ -4,6 +4,7 @@ import Chat from './Chat'
 
 const rootStyle = css`
   margin: 10px 36px;
+  overflow: auto;
 `
 
 const dateBlockStyle = css`
