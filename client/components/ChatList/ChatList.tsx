@@ -1,16 +1,24 @@
-import React, { FC } from 'react'
+import React, { FC, useCallback } from 'react'
 import { css } from '@emotion/core'
+import { Scrollbars } from 'react-custom-scrollbars-2'
+import buildSection from 'utils/buildSection'
 import Chat from './Chat'
+import { PAGE_SIZE } from '../DirectMessage/DirectMessage'
 
 const rootStyle = css`
+  display: flex;
+  flex: 1 1 0%;
   margin: 10px 36px;
-  overflow: auto;
 `
 
 const dateBlockStyle = css`
+  position: sticky;
+  top: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 1;
+  width: 100%;
   height: 2px;
   background-color: #2E334D;
 `
@@ -25,25 +33,51 @@ const dateStyle = css`
 `
 
 interface ChatListProps {
-  chatSections: { [key: string]: (any | any)[] }
+  scrollbarRef: any
+  setSize: (value: any) => any
+  chatData: any
 }
 
-const ChatList: FC<ChatListProps> = ({ chatSections }) => {
+const ChatList: FC<ChatListProps> = ({ scrollbarRef, setSize, chatData }) => {
+  if (!chatData) {
+    return null
+  }
+
+  const isEmpty = chatData[0].length === 0
+  const isReachingEnd = chatData[chatData.length - 1].length < PAGE_SIZE
+
+  const newChatData = chatData ? [].concat(...chatData).reverse() : []
+  const chatSections = buildSection(newChatData)
+
+  const onScroll = useCallback(
+    (values) => {
+      if (values.scrollTop === 0 && !isReachingEnd && !isEmpty) {
+
+        setSize((size: number) => size + 1).then(() => {
+          scrollbarRef.current?.scrollTop(scrollbarRef.current?.getScrollHeight() - values.scrollHeight);
+        })
+
+      }
+    },
+    [setSize, scrollbarRef, isReachingEnd, isEmpty],
+  )
 
   return (
     <div css={rootStyle}>
-      {Object.entries(chatSections).map(([date, chats]) => {
-        return (
-          <div className={`section-${date}`} key={date}>
-            <div css={dateBlockStyle}>
-              <span css={dateStyle}>{date}</span>
+      <Scrollbars autoHide ref={scrollbarRef} onScrollFrame={onScroll}>
+        {Object.entries(chatSections).map(([date, chats]) => {
+          return (
+            <div className={`section-${date}`} key={date}>
+              <div css={dateBlockStyle}>
+                <span css={dateStyle}>{date}</span>
+              </div>
+              {chats.map((chat, idx) => (
+                <Chat chat={chat} key={idx} />
+              ))}
             </div>
-            {chats.map((chat, idx) => (
-              <Chat chat={chat} senderID={chat.SenderId} key={idx} />
-            ))}
-          </div>
-        )
-      })}
+          )
+        })}
+      </Scrollbars>
     </div>
   )
 }

@@ -33,13 +33,13 @@ const contentStyle = css`
 
 interface ChatProps {
   chat: any
-  senderID: string
 }
 
-const Chat: FC<ChatProps> = ({ chat, senderID }) => {
+const Chat: FC<ChatProps> = ({ chat }) => {
   const { workspace } = useParams<{ workspace: string; channel: string }>()
   const { data: myData } = useSWR<any>('/api/users', fetcher)
   const user = chat.Sender
+  const senderID = chat.SenderId
 
   const me = myData.id === senderID
 

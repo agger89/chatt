@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useRef } from 'react'
 import { useParams } from 'react-router'
 import axios from 'axios'
 import useSWR from 'swr'
@@ -6,7 +6,6 @@ import useSWRInfinite from 'swr/infinite'
 import { css } from '@emotion/core'
 import useSocket from 'hooks/useSocket'
 import fetcher from 'utils/fetch'
-import buildSection from 'utils/buildSection'
 import { ChatList } from 'components/ChatList'
 import { ChatInput } from 'components/ChatInput'
 import Header from './Header'
@@ -18,7 +17,7 @@ const rootStyle = css`
   width: 100%;
 `
 
-const PAGE_SIZE = 20
+export const PAGE_SIZE = 20
 const DirectMessage: FC = () => {
   const { workspace, id } = useParams<{ workspace: string; id: string }>()
   const [socket] = useSocket(workspace)
@@ -30,21 +29,18 @@ const DirectMessage: FC = () => {
     setSize,
   } = useSWRInfinite<any[]>(
     (index) => `/api/workspaces/${workspace}/dms/${id}/chats?perPage=${PAGE_SIZE}&page=${index + 1}`,
-    fetcher,
-    {
-      onSuccess(data) {
-        console.log('data')
-      },
-    },
+    fetcher
   )
 
-  const chatSections = buildSection(chatData ? ([] as any[]).concat(...chatData).reverse() : []);
+  const scrollbarRef = useRef(null)
 
   return (
     <div css={rootStyle}>
       <Header user={user} />
       <ChatList
-        chatSections={chatSections}
+        scrollbarRef={scrollbarRef}
+        setSize={setSize}
+        chatData={chatData}
       />
       <ChatInput />
     </div>

@@ -91,12 +91,13 @@ const ChatInput: FC = () => {
     //     //   scrollbarRef.current.scrollToBottom()
     //     // }
     //   })
-    //   axios
-    //     .post(`/api/workspaces/${workspace}/dms/${id}/chats`, {
-    //       content: chat,
-    //     })
-    //     .catch(console.error)
+    axios
+      .post(`/api/workspaces/${workspace}/dms/${id}/chats`, {
+        content: chat,
+      })
+      .catch(console.error)
     // }
+    reset({ chat: '' })
   }
 
   const handleKeydownChat = (e: any) => {
