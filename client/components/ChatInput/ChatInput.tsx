@@ -17,6 +17,9 @@ const rootStyle = css`
 
 const formControlStyle = css`
   width: 100%;
+  & strong {
+    background-color: rgb(71, 110, 238);
+  }
   & textarea {
     border: none;
     outline: none;
@@ -146,14 +149,13 @@ const ChatInput: FC = () => {
                 placeholder="Enter what you want to say"
                 inputRef={chatRef}
                 allowSuggestionsAboveCursor
-                style={{ borderRadius: '10px' }}
               >
                 <Mention
+                  displayTransform={(_, name) => `@${name}`}
                   appendSpaceOnAdd
                   trigger="@"
                   data={memberData?.map((v) => ({ id: v.id, display: v.nickname })) || []}
                   renderSuggestion={rendererSuggestionUser}
-                  style={{ borderRadius: '10px' }}
                 />
               </MentionsInput>
             )}
