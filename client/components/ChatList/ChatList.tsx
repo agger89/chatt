@@ -8,7 +8,12 @@ import { PAGE_SIZE } from '../DirectMessage/DirectMessage'
 const rootStyle = css`
   display: flex;
   flex: 1 1 0%;
-  margin: 10px 36px;
+  margin: 10px 26px;
+`
+
+const sectionStyle = css`
+  margin-top: 20px;
+  border-top: 2px solid #2E334D;
 `
 
 const dateBlockStyle = css`
@@ -19,11 +24,12 @@ const dateBlockStyle = css`
   justify-content: center;
   flex: 1;
   width: 100%;
-  height: 2px;
-  background-color: #2E334D;
+  
 `
 
 const dateStyle = css`
+  position: absolute;
+  top: -12px;
   padding: 0 20px;
   background-color: #282C44;
   font-family: monospace;
@@ -67,7 +73,7 @@ const ChatList: FC<ChatListProps> = ({ scrollbarRef, setSize, chatData }) => {
       <Scrollbars autoHide ref={scrollbarRef} onScrollFrame={onScroll}>
         {Object.entries(chatSections).map(([date, chats]) => {
           return (
-            <div className={`section-${date}`} key={date}>
+            <div css={sectionStyle} className={`section-${date}`} key={date}>
               <div css={dateBlockStyle}>
                 <span css={dateStyle}>{date}</span>
               </div>

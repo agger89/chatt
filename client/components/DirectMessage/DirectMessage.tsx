@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react'
+import React, { FC, useRef, useEffect } from 'react'
 import { useParams } from 'react-router'
 import axios from 'axios'
 import useSWR from 'swr'
@@ -32,7 +32,15 @@ const DirectMessage: FC = () => {
     fetcher
   )
 
-  const scrollbarRef = useRef(null)
+  const scrollbarRef = useRef<any>(null)
+
+  useEffect(() => {
+    if (chatData) {
+      setTimeout(() => {
+        scrollbarRef.current?.scrollToBottom()
+      })
+    }
+  }, [chatData])
 
   return (
     <div css={rootStyle}>
