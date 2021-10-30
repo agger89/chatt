@@ -1,14 +1,13 @@
 import React, { FC, useRef, useEffect } from 'react'
 import { useParams } from 'react-router'
-import axios from 'axios'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
-import { css } from '@emotion/core'
 import useSocket from 'hooks/useSocket'
+import { css } from '@emotion/core'
 import fetcher from 'utils/fetch'
-import { ChatList } from 'components/ChatList'
-import { ChatInput } from 'components/ChatInput'
-import Header from './Header'
+import ChatHeader from './components/ChatHeader'
+import ChatInput from './components/input/ChatInput'
+import ChatList from './components/ChatList'
 
 const rootStyle = css`
   display: flex;
@@ -18,7 +17,7 @@ const rootStyle = css`
 `
 
 export const PAGE_SIZE = 20
-const DirectMessage: FC = () => {
+const ChatMessage: FC = () => {
   const { workspace, id } = useParams<{ workspace: string; id: string }>()
   const [socket] = useSocket(workspace)
   const { data: myData } = useSWR<any>('/api/users', fetcher)
@@ -44,7 +43,7 @@ const DirectMessage: FC = () => {
 
   return (
     <div css={rootStyle}>
-      <Header user={user} />
+      <ChatHeader />
       <ChatList
         scrollbarRef={scrollbarRef}
         setSize={setSize}
@@ -55,4 +54,4 @@ const DirectMessage: FC = () => {
   )
 }
 
-export default DirectMessage
+export default ChatMessage

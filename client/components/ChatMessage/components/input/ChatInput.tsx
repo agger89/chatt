@@ -1,14 +1,13 @@
-import React, { FC, useState, useRef, useEffect, ReactNode } from 'react'
+import React, { FC } from 'react'
 import { useParams } from 'react-router'
 import axios from 'axios'
 import fetcher from 'utils/fetch'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
-import gravatar from 'gravatar'
 import { css } from '@emotion/core'
-import { FormControl, TextField, Button, Snackbar, Slide } from '@material-ui/core'
+import { FormControl } from '@material-ui/core'
 import { Controller, useForm } from "react-hook-form"
-import { Mention, SuggestionDataItem, MentionsInput } from 'react-mentions'
+import ChatMention from './ChatMention'
 
 const rootStyle = css`
   padding: 44px 34px;
@@ -28,21 +27,6 @@ const formControlStyle = css`
   }
 `
 
-const suggetionStyle = css`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 4px 20px;
-  color: rgb(28, 29, 28);
-  & img {
-    margin-right: 5px;
-  }
-  &:hover {
-    background: #476EEE;
-    color: #fff;
-  }
-`
-
 const PAGE_SIZE = 20
 const ChatInput: FC = () => {
   const { workspace, id } = useParams<{ workspace: string; id: string }>()
@@ -53,14 +37,8 @@ const ChatInput: FC = () => {
     (index) => `/api/workspace/${workspace}/dm/${id}/chats?perPage=${PAGE_SIZE}&page=${index + 1}`,
     fetcher,
   )
-  const { data: memberData } = useSWR<any[]>(userData ? `/api/workspaces/${workspace}/members` : null, fetcher)
 
   const { handleSubmit, control, formState: { errors }, getValues, clearErrors, setError, reset } = useForm()
-  const chatRef = useRef<HTMLTextAreaElement>(null)
-
-  useEffect(() => {
-    chatRef.current?.focus()
-  }, [])
 
   const onSubmit = (e: any) => {
     e.preventDefault()
@@ -103,36 +81,6 @@ const ChatInput: FC = () => {
     reset({ chat: '' })
   }
 
-  const handleKeydownChat = (e: any) => {
-    if (e.key === 'Enter') {
-      if (!e.shiftKey) {
-        e.preventDefault()
-        onSubmit(e)
-      }
-    }
-  }
-
-  const rendererSuggestionUser = (
-    suggestion: SuggestionDataItem,
-    search: string,
-    highlightedDisplay: ReactNode,
-    index: number,
-    focus: boolean,
-  ): ReactNode => {
-
-    if (!memberData) return
-
-    return (
-      <div css={suggetionStyle}>
-        <img
-          src={gravatar.url(memberData[index].email, { s: '20px', d: 'retro' })}
-          alt={memberData[index].nickname}
-        />
-        <span>{highlightedDisplay}</span>
-      </div>
-    )
-  }
-
   return (
     <div css={rootStyle}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -141,23 +89,7 @@ const ChatInput: FC = () => {
             control={control}
             name="chat"
             render={({ field: { onChange, value } }) => (
-              <MentionsInput
-                id="editor-chat"
-                value={value}
-                onChange={onChange}
-                onKeyPress={handleKeydownChat}
-                placeholder="Enter what you want to say"
-                inputRef={chatRef}
-                allowSuggestionsAboveCursor
-              >
-                <Mention
-                  displayTransform={(_, name) => `@${name}`}
-                  appendSpaceOnAdd
-                  trigger="@"
-                  data={memberData?.map((v) => ({ id: v.id, display: v.nickname })) || []}
-                  renderSuggestion={rendererSuggestionUser}
-                />
-              </MentionsInput>
+              <ChatMention userData={userData} onSubmit={onSubmit} onChange={onChange} value={value} />
             )}
           />
         </FormControl>

@@ -2,8 +2,8 @@ import React, { FC, useCallback } from 'react'
 import { css } from '@emotion/core'
 import { Scrollbars } from 'react-custom-scrollbars-2'
 import buildSection from 'utils/buildSection'
-import Chat from './Chat'
-import { PAGE_SIZE } from '../DirectMessage/DirectMessage'
+import ChatContent from './ChatContent'
+import { PAGE_SIZE } from '../ChatMessage'
 
 const rootStyle = css`
   display: flex;
@@ -78,7 +78,7 @@ const ChatList: FC<ChatListProps> = ({ scrollbarRef, setSize, chatData }) => {
                 <span css={dateStyle}>{date}</span>
               </div>
               {chats.map((chat, idx) => (
-                <Chat chat={chat} key={idx} />
+                <ChatContent chat={chat} key={idx} />
               ))}
             </div>
           )

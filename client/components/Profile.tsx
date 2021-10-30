@@ -43,11 +43,11 @@ const lastCommentStyle = css`
   color: #666B85;
 `
 
-interface ChattProfileProps {
+interface ProfileProps {
   user: any
 }
 
-const ChattProfile: FC<ChattProfileProps> = ({ user }) => {
+const Profile: FC<ProfileProps> = ({ user }) => {
   const { data: users } = useSWR<any>('/api/users', fetcher, {
     dedupingInterval: 2000,
   })
@@ -71,4 +71,4 @@ const ChattProfile: FC<ChattProfileProps> = ({ user }) => {
   )
 }
 
-export default ChattProfile
+export default Profile

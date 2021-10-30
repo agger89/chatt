@@ -3,9 +3,9 @@ import loadable from '@loadable/component'
 import { css } from '@emotion/core'
 import { Switch, Route, Redirect } from 'react-router-dom'
 
-const Signup = loadable(() => import('pages/Signup'))
-const Login = loadable(() => import('pages/Login'))
-const Chatspace = loadable(() => import('layouts/Chatspace'))
+const Signup = loadable(() => import('pages/signup/Signup'))
+const Login = loadable(() => import('pages/login/Login'))
+const Chatspace = loadable(() => import('pages/chat-space/Chatspace'))
 
 const signupBlock = css`
   display: flex;

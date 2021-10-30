@@ -1,8 +1,9 @@
-import React, { FC, memo, useMemo } from 'react'
+import React, { FC, memo } from 'react'
 import useSWR from 'swr'
 import fetcher from 'utils/fetch'
 import { css } from '@emotion/core'
-import { Link, useParams } from 'react-router-dom'
+import { Box } from '@material-ui/core'
+import { useParams } from 'react-router-dom'
 import dayjs from 'dayjs'
 import ProfileImage from 'components/ProfileImage'
 
@@ -44,20 +45,20 @@ const Chat: FC<ChatProps> = ({ chat }) => {
   const me = myData.id === senderID
 
   return (
-    <div css={rootStyle} style={{ justifyContent: !me ? 'flex-end' : 'initial' }}>
-      <div css={profileBlockStyle}>
+    <Box css={rootStyle} style={{ justifyContent: !me ? 'flex-end' : 'initial' }}>
+      <Box css={profileBlockStyle}>
         <ProfileImage user={{
           email: user?.email, nickname: user?.nickname,
         }} size="30" />
-      </div>
-      <div>
-        <div css={contentInfoBlockStyle}>
+      </Box>
+      <Box>
+        <Box css={contentInfoBlockStyle}>
           <span>{user.nickname},</span>{" "}
           <span>{dayjs(chat.createdAt).format('h:mm A')}</span>
-        </div>
+        </Box>
         <p css={contentStyle} style={{ backgroundColor: !me ? '#476EEE' : '#2E334D' }}>{chat.content}</p>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 
