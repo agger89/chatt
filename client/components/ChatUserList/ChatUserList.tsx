@@ -6,7 +6,6 @@ import ChatUser from './components/ChatUser'
 const rootStyle = css`
   display: flex;
   justify-content: center;
-  width: 370px;
   padding: 60px 28px;
   border-right: 2px solid #2E334D;
 `

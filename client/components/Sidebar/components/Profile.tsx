@@ -5,17 +5,6 @@ import { Box, Dialog, Button } from '@material-ui/core'
 import ProfileImage from 'components/ProfileImage'
 
 const rootStyle = css`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  width: 90px;
-  height: 100%;
-  background-color: #2E334D;
-  border-radius: 20px;
-`
-
-const profileStyle = css`
   display: inline-block;
   margin-bottom: 40px;
   cursor: pointer;
@@ -71,8 +60,8 @@ const Profile: FC<ProfileProps> = ({ mutateUser, user }) => {
   }
 
   return (
-    <Box css={rootStyle}>
-      <Box css={profileStyle} onClick={handleDialogOpen}>
+    <>
+      <Box css={rootStyle} onClick={handleDialogOpen}>
         <ProfileImage user={{
           email: user?.email, nickname: user?.nickname,
         }} size="36px" />
@@ -88,7 +77,7 @@ const Profile: FC<ProfileProps> = ({ mutateUser, user }) => {
         </Box>
         <Button css={logoutTextStyle} onClick={handleLogOut}>로그아웃</Button>
       </Dialog>
-    </Box>
+    </>
   )
 }
 

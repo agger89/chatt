@@ -11,11 +11,10 @@ import useSocket from 'hooks/useSocket'
 import Sidebar from 'components/Sidebar/Sidebar'
 
 const rootStyle = css`
-  width: 1400px;
-  height: 880px;
+  width: 100%;
+  height: 100%;
   display: flex;
   background-color: #282C44;
-  border-radius: 20px;
 `
 
 const Chatspace = () => {
