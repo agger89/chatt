@@ -46,17 +46,16 @@ const GroupChat = () => {
     fetcher,
   )
 
+  console.log('channelMembersData', channelMembersData)
   const [modalIsOpen, setModalIsOpen] = useState(false)
 
   const scrollbarRef = useRef<any>(null)
 
-  const { formState: { errors }, getValues, clearErrors, setError, reset } = useForm()
+  const { handleSubmit, control, formState: { errors }, getValues, clearErrors, setError, reset } = useForm()
 
-  const handleSubmit = () => {
+  const handleChatSubmit = () => {
     const { chat } = getValues()
     clearErrors(['chat'])
-
-    console.log('chat', chat)
     // if (chat?.trim() && chatData && channelData) {
     //   const savedChat = chat
     //   mutateChat((prevChatData) => {
@@ -89,10 +88,11 @@ const GroupChat = () => {
       .post(`/api/workspaces/${workspace}/channels/${channel}/chats`, {
         content: chat,
       })
-      .then(() => {
-        revalidate()
-      })
+      // .then(() => {
+      //   revalidate()
+      // })
       .catch(console.error)
+    reset({ value: '' })
   }
 
   const handleOpenModal = () => {
@@ -111,7 +111,7 @@ const GroupChat = () => {
         setSize={setSize}
         chatData={chatData}
       />
-      <ChatInput onSubmitMessage={handleSubmit} />
+      <ChatInput onSubmit={handleSubmit(handleChatSubmit)} control={control} />
       {/* <InviteGroupChatModal
         modalIsOpen={modalIsOpen}
         onModalIsOpen={setModalIsOpen}

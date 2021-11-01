@@ -2,8 +2,6 @@ import dayjs from 'dayjs'
 
 export default function buildSection<T extends any | any>(chatList: any[]) {
 
-  console.log('chatList', chatList)
-
   const sections: { [key: string]: T[] } = {}
 
   chatList.forEach((chat) => {

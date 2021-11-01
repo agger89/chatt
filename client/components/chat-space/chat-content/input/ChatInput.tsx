@@ -28,11 +28,12 @@ const formControlStyle = css`
 `
 
 interface ChatInputProps {
-  onSubmitMessage: () => void
+  onSubmit: () => void
+  control: any
 }
 
 const PAGE_SIZE = 20
-const ChatInput: FC<ChatInputProps> = ({ onSubmitMessage }) => {
+const ChatInput: FC<ChatInputProps> = ({ onSubmit, control }) => {
   const { workspace, channel, id } = useParams<{ workspace: string; channel: string; id: string }>()
   // const { workspace, id } = useParams<{ workspace: string; id: string }>()
   const { data: myData } = useSWR('/api/user', fetcher) as any
@@ -42,54 +43,9 @@ const ChatInput: FC<ChatInputProps> = ({ onSubmitMessage }) => {
     fetcher,
   )
 
-  const { handleSubmit, control, formState: { errors }, getValues, clearErrors, setError, reset } = useForm()
-
-  const onSubmit = () => {
-    const { chat } = getValues()
-    clearErrors(['chat'])
-
-    console.log('chat', chat)
-    // if (chat?.trim() && chatData && channelData) {
-    //   const savedChat = chat
-    //   mutateChat((prevChatData) => {
-    //     prevChatData?.[0].unshift({
-    //       id: (chatData[0][0]?.id || 0) + 1,       
-    //       content: savedChat,
-    //       UserId: myData.id,
-    //       User: myData,
-    //       ChannelId: channelData.id,
-    //       Channel: channelData,
-    //       createdAt: new Date(),
-    //     })
-    //     return prevChatData
-    //   }, false)
-    //     .then(() => {
-    //       reset({ chat: '' })
-    //       scrollbarRef.current?.scrollToBottom()
-    //     })
-    //   axios
-    //     .post(`/api/workspaces/${workspace}/channels/${channel}/chats`, {
-    //       content: chat,
-    //     })
-    //     .then(() => {
-    //       revalidate()
-    //     })
-    //     .catch(console.error)
-    // }
-
-    axios
-      .post(`/api/workspaces/${workspace}/channels/${channel}/chats`, {
-        content: chat,
-      })
-      .then(() => {
-        mutateChat()
-      })
-      .catch(console.error)
-  }
-
   return (
     <div css={rootStyle}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={onSubmit}>
         <FormControl css={formControlStyle}>
           <Controller
             control={control}
@@ -100,7 +56,7 @@ const ChatInput: FC<ChatInputProps> = ({ onSubmitMessage }) => {
           />
         </FormControl>
       </form>
-    </div>
+    </div >
   )
 }
 

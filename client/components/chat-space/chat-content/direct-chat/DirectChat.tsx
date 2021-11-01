@@ -58,10 +58,9 @@ const DirectChat: FC = () => {
     }
   }, [chatData])
 
-  const { formState: { errors }, getValues, clearErrors, setError, reset } = useForm()
+  const { handleSubmit, control, formState: { errors }, getValues, clearErrors, setError, reset } = useForm()
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault()
+  const handleChatSubmit = () => {
     const { chat } = getValues()
     clearErrors(['chat'])
 
@@ -112,7 +111,7 @@ const DirectChat: FC = () => {
         setSize={setSize}
         chatData={chatData}
       />
-      {/* <ChatInput onSubmit={handleSubmit} /> */}
+      <ChatInput onSubmit={handleSubmit(handleChatSubmit)} control={control} />
     </div>
   )
 }
