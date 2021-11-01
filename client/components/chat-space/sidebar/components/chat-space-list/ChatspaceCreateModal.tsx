@@ -1,11 +1,8 @@
 import React, { FC, useState } from 'react'
 import axios from 'axios'
 import { css } from '@emotion/core'
-import { Dialog, Box, Button, Typography, Snackbar, Slide } from '@material-ui/core'
-
-const formStyle = css`
-  padding: 20px 80px;
-`
+import { Box, Button, Typography } from '@material-ui/core'
+import ModalForm from 'components/chat-space/ModalForm'
 
 const inputGroupStyle = css`
   display: flex;
@@ -22,32 +19,31 @@ const buttonStyle = css`
   border: 1px solid #000 !important;
 `
 
-
 interface ChatspaceCreateModalProps {
   modalIsOpen: boolean
   onModalIsOpen: (value: boolean) => void
 }
 
 const ChatspaceCreateModal: FC<ChatspaceCreateModalProps> = ({ modalIsOpen, onModalIsOpen }) => {
-  const [workspaceName, setWorkspaceName] = useState('')
-  const [workspaceUrl, setWorkspaceUrl] = useState('')
+  const [channelName, setChannelName] = useState('')
+  const [channelUrl, setChannelUrl] = useState('')
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false)
 
-  const handleCreateWorkspace = (e: any) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault()
 
-    if (!workspaceName || !workspaceName.trim()) {
+    if (!channelName || !channelName.trim()) {
       return
     }
 
-    if (!workspaceUrl || !workspaceUrl.trim()) {
+    if (!channelUrl || !channelUrl.trim()) {
       return
     }
 
     axios
       .post('/api/workspaces', {
-        workspace: workspaceName,
-        url: workspaceUrl,
+        workspace: channelName,
+        url: channelUrl,
       })
       .then(() => {
         onModalIsOpen(false)
@@ -58,46 +54,33 @@ const ChatspaceCreateModal: FC<ChatspaceCreateModalProps> = ({ modalIsOpen, onMo
       })
   }
 
-  const handleCloseModal = () => {
-    onModalIsOpen(false)
+  const handleChangeChannelName = (e: any) => {
+    setChannelName(e.target.value)
   }
 
-  const handleChangeWorkspaceName = (e: any) => {
-    setWorkspaceName(e.target.value)
-  }
-
-  const handleChangeWorkspaceUrl = (e: any) => {
-    setWorkspaceUrl(e.target.value)
-  }
-
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false)
+  const handleChangeChannelUrl = (e: any) => {
+    setChannelUrl(e.target.value)
   }
 
   return (
-    <>
-      <Dialog onClose={handleCloseModal} open={modalIsOpen}>
-        <form onSubmit={handleCreateWorkspace} css={formStyle}>
-          <Box css={inputGroupStyle}>
-            <Typography>워크스페이스 이름</Typography>
-            <input value={workspaceName} onChange={handleChangeWorkspaceName} css={inputStyle} />
-          </Box>
-          <Box css={inputGroupStyle}>
-            <Typography>워크스페이스 url</Typography>
-            <input value={workspaceUrl} onChange={handleChangeWorkspaceUrl} css={inputStyle} />
-          </Box>
-          <Button type="submit" css={buttonStyle}>생성하기</Button>
-        </form>
-      </Dialog>
-      <Snackbar
-        open={snackbarOpen}
-        onClose={handleSnackbarClose}
-        autoHideDuration={1000}
-        TransitionComponent={Slide}
-        message={<span>채팅스페이스 생성 성공!</span>}
-        key='slide'
-      />
-    </>
+    <ModalForm
+      modalIsOpen={modalIsOpen}
+      onModalIsOpen={onModalIsOpen}
+      onSubmit={handleSubmit}
+      snackbarOpen={snackbarOpen}
+      onSnackbarOpen={setSnackbarOpen}
+      snackbarMessage="채널 생성 성공!"
+    >
+      <Box css={inputGroupStyle}>
+        <Typography>채널 이름</Typography>
+        <input value={channelName} onChange={handleChangeChannelName} css={inputStyle} />
+      </Box>
+      <Box css={inputGroupStyle}>
+        <Typography>채널 url</Typography>
+        <input value={channelUrl} onChange={handleChangeChannelUrl} css={inputStyle} />
+      </Box>
+      <Button type="submit" css={buttonStyle}>생성하기</Button>
+    </ModalForm>
   )
 }
 

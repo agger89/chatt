@@ -36,10 +36,10 @@ export const PAGE_SIZE = 20
 const DirectChat: FC = () => {
   const { workspace, id } = useParams<{ workspace: string; id: string }>()
   const [socket] = useSocket(workspace)
-  const { data: myData } = useSWR<any>('/api/users', fetcher)
+  const { data: me } = useSWR<any>('/api/users', fetcher)
   const { data: user } = useSWR<any>(`/api/workspaces/${workspace}/users/${id}`, fetcher)
   const {
-    data: chatData,
+    data: chats,
     mutate: mutateChat,
     revalidate,
     setSize,
@@ -51,12 +51,12 @@ const DirectChat: FC = () => {
   const scrollbarRef = useRef<any>(null)
 
   useEffect(() => {
-    if (chatData) {
+    if (chats) {
       setTimeout(() => {
         scrollbarRef.current?.scrollToBottom()
       })
     }
-  }, [chatData])
+  }, [chats])
 
   const { handleSubmit, control, formState: { errors }, getValues, clearErrors, setError, reset } = useForm()
 
@@ -109,7 +109,7 @@ const DirectChat: FC = () => {
       <ChatMessage
         scrollbarRef={scrollbarRef}
         setSize={setSize}
-        chatData={chatData}
+        chats={chats}
       />
       <ChatInput onSubmit={handleSubmit(handleChatSubmit)} control={control} />
     </div>

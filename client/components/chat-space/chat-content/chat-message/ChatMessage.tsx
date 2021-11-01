@@ -39,19 +39,19 @@ const dateStyle = css`
 interface ChatMessageProps {
   scrollbarRef: any
   setSize: (value: any) => any
-  chatData: any
+  chats: any
 }
 
 export const PAGE_SIZE = 20
-const ChatMessage: FC<ChatMessageProps> = ({ scrollbarRef, setSize, chatData }) => {
-  if (!chatData) {
+const ChatMessage: FC<ChatMessageProps> = ({ scrollbarRef, setSize, chats }) => {
+  if (!chats) {
     return null
   }
 
-  const isEmpty = chatData[0].length === 0
-  const isReachingEnd = chatData[chatData.length - 1].length < PAGE_SIZE
+  const isEmpty = chats[0].length === 0
+  const isReachingEnd = chats[chats.length - 1].length < PAGE_SIZE
 
-  const newChatData = chatData ? [].concat(...chatData).reverse() : []
+  const newChatData = chats ? [].concat(...chats).reverse() : []
   const chatSections = buildSection(newChatData)
 
   const onScroll = useCallback(

@@ -4,6 +4,7 @@ import useSWR from 'swr'
 import axios from 'axios'
 import { Dialog, Box, Button, Typography, Snackbar, Slide } from '@material-ui/core'
 import fetcher from 'utils/fetch'
+import ModalForm from 'components/chat-space/ModalForm'
 
 interface InviteGroupChatModalProps {
   modalIsOpen: boolean
@@ -11,36 +12,24 @@ interface InviteGroupChatModalProps {
 }
 
 const InviteGroupChatModal: FC<InviteGroupChatModalProps> = ({ modalIsOpen, onModalIsOpen }) => {
-  const { workspace, channel } = useParams<{ workspace: string, channel: string }>()
+  const { workspace } = useParams<{ workspace: string; channel: string }>()
   const [newMember, setNewMember] = useState('')
-
-  const { data: userData } = useSWR<any>('/api/users', fetcher)
-  const { revalidate: revalidateMembers }: any = useSWR<any[]>(
-    userData && channel ? `/api/workspaces/${workspace}/channels/${channel}/members` : null,
-    fetcher,
-  )
-
+  const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false)
 
   const handleSubmit = (e: any) => {
     e.preventDefault()
-
-    console.log('workspace', workspace)
-    console.log('newMember', newMember)
-    console.log('channel', channel)
 
     if (!newMember || !newMember.trim()) {
       return
     }
 
     axios
-      .post(`/api/workspaces/${workspace}/channels/${channel}/members`, {
+      .post(`/api/workspaces/${workspace}/members`, {
         email: newMember,
       })
       .then(() => {
-        console.log('성공')
-        revalidateMembers()
         onModalIsOpen(false)
-        // setNewMember('')
+        setSnackbarOpen(true)
       })
       .catch((error) => {
         console.dir(error)
@@ -48,25 +37,25 @@ const InviteGroupChatModal: FC<InviteGroupChatModalProps> = ({ modalIsOpen, onMo
       })
   }
 
-
-  const handleCloseModal = () => {
-    onModalIsOpen(false)
-  }
-
   const handleChangeNewMember = (e: any) => {
     setNewMember(e.target.value)
   }
 
   return (
-    <Dialog onClose={handleCloseModal} open={modalIsOpen}>
-      <form onSubmit={handleSubmit}>
-        <Box id="member-label">
-          <span>채널 멤버 초대</span>
-          <input value={newMember} onChange={handleChangeNewMember} />
-        </Box>
-        <Button type="submit">초대하기</Button>
-      </form>
-    </Dialog>
+    <ModalForm
+      modalIsOpen={modalIsOpen}
+      onModalIsOpen={onModalIsOpen}
+      onSubmit={handleSubmit}
+      snackbarOpen={snackbarOpen}
+      onSnackbarOpen={setSnackbarOpen}
+      snackbarMessage="멤버 초대 성공!"
+    >
+      <Box>
+        <span>이메일</span>
+        <input value={newMember} type="email" onChange={handleChangeNewMember} />
+      </Box>
+      <Button type="submit">초대하기</Button>
+    </ModalForm>
   )
 }
 

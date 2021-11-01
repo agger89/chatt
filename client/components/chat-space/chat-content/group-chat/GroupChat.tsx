@@ -6,12 +6,13 @@ import useSWRInfinite from 'swr/infinite'
 import { useForm } from 'react-hook-form'
 import useSocket from 'hooks/useSocket'
 import { css } from '@emotion/core'
+import { Box, Typography, Button } from '@material-ui/core'
+import PersonAddIcon from '@mui/icons-material/PersonAddAlt'
 import fetcher from 'utils/fetch'
 import ChatHeader from '../ChatHeader'
 import ChatMessage from '../chat-message/ChatMessage'
 import ChatInput from '../input/ChatInput'
-// import InviteGroupChatModal from 'components/InviteGroupChatModal'
-import { Typography } from '@material-ui/core'
+import InviteGroupChatModal from './InviteGroupChatModal'
 
 const rootStyle = css`
   display: flex;
@@ -33,19 +34,25 @@ const headerSubTitleStyle = css`
   font-weight: 600;
 `
 
+const buttonStyle = css`
+  margin-left: auto !important;
+  color: #fff !important;
+`
+
 const GroupChat = () => {
   const { workspace, channel } = useParams<{ workspace: string; channel: string }>()
-  const { data: myData } = useSWR('/api/users', fetcher)
+  const { data: me } = useSWR('/api/users', fetcher)
   const { data: channelData } = useSWR<any>(`/api/workspaces/${workspace}/channels/${channel}`, fetcher)
-  const { data: chatData, mutate: mutateChat, revalidate, setSize }: any = useSWRInfinite<any>(
+  const { data: chats, mutate: mutateChat, revalidate, setSize }: any = useSWRInfinite<any>(
     (index: number) => `/api/workspaces/${workspace}/channels/${channel}/chats?perPage=20&page=${index + 1}`,
     fetcher,
   )
-  const { data: channelMembersData } = useSWR<any[]>(
-    myData ? `/api/workspaces/${workspace}/channels/${channel}/members` : null,
+  const { data: members } = useSWR<any[]>(
+    me ? `/api/workspaces/${workspace}/channels/${channel}/members` : null,
     fetcher,
   )
 
+  console.log('chats', chats)
   const [modalIsOpen, setModalIsOpen] = useState(false)
 
   const scrollbarRef = useRef<any>(null)
@@ -98,23 +105,32 @@ const GroupChat = () => {
     setModalIsOpen(true)
   }
 
+  const handleClickModalOpen = () => {
+    setModalIsOpen(true)
+  }
+
   return (
     <div css={rootStyle}>
-      {/* <button onClick={handleOpenModal}>초대초대</button> */}
       <ChatHeader>
         <span css={headerTitleStyle}>단톡방</span>
-        <span css={headerSubTitleStyle}>({channelMembersData?.length}명)</span>
+        <span css={headerSubTitleStyle}>({members?.length}명)</span>
+        <Button
+          onClick={handleClickModalOpen}
+          css={buttonStyle}
+        >
+          <PersonAddIcon />
+        </Button>
       </ChatHeader>
       <ChatMessage
         scrollbarRef={scrollbarRef}
         setSize={setSize}
-        chatData={chatData}
+        chats={chats}
       />
       <ChatInput onSubmit={handleSubmit(handleChatSubmit)} control={control} />
-      {/* <InviteGroupChatModal
+      <InviteGroupChatModal
         modalIsOpen={modalIsOpen}
         onModalIsOpen={setModalIsOpen}
-      /> */}
+      />
     </div>
   )
 }
