@@ -30,11 +30,10 @@ const chatUserNicknameStyle = css`
   display: flex;
   flex-direction: column;
   margin-left: 10px;
-  font-family: monospace;
 `
 
 const nicknameStyle = css`
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   color: #fff;
 `

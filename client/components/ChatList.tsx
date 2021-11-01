@@ -3,7 +3,7 @@ import { css } from '@emotion/core'
 import { Scrollbars } from 'react-custom-scrollbars-2'
 import buildSection from 'utils/buildSection'
 import ChatContent from './ChatContent'
-import { PAGE_SIZE } from '../ChatMessage'
+import { PAGE_SIZE } from './DirectChat/DirectChat'
 
 const rootStyle = css`
   display: flex;

@@ -9,9 +9,9 @@ const rootStyle = css`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  width: 90px;
   height: 100%;
   background-color: #2E334D;
-  padding: 0 10px;
 `
 
 interface SidebarProps {

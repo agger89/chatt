@@ -3,7 +3,7 @@ import { useParams } from 'react-router'
 import axios from 'axios'
 import fetcher from 'utils/fetch'
 import useSWR from 'swr'
-import useSWRInfinite from 'swr/infinite'
+import useSWRInfinite from 'swr/infinite';
 import { css } from '@emotion/core'
 import { FormControl } from '@material-ui/core'
 import { Controller, useForm } from "react-hook-form"
@@ -27,58 +27,64 @@ const formControlStyle = css`
   }
 `
 
-const PAGE_SIZE = 20
-const ChatInput: FC = () => {
-  const { workspace, id } = useParams<{ workspace: string; id: string }>()
+interface ChatInputProps {
+  onSubmitMessage: () => void
+}
 
+const PAGE_SIZE = 20
+const ChatInput: FC<ChatInputProps> = ({ onSubmitMessage }) => {
+  const { workspace, channel, id } = useParams<{ workspace: string; channel: string; id: string }>()
+  // const { workspace, id } = useParams<{ workspace: string; id: string }>()
   const { data: myData } = useSWR('/api/user', fetcher) as any
   const { data: userData } = useSWR(`/api/workspace/${workspace}/user/${id}`, fetcher) as any
   const { data: chatData, mutate: mutateChat, setSize } = useSWRInfinite<any[]>(
-    (index) => `/api/workspace/${workspace}/dm/${id}/chats?perPage=${PAGE_SIZE}&page=${index + 1}`,
+    (index: number) => `/api/workspace/${workspace}/dm/${id}/chats?perPage=${PAGE_SIZE}&page=${index + 1}`,
     fetcher,
   )
 
   const { handleSubmit, control, formState: { errors }, getValues, clearErrors, setError, reset } = useForm()
 
-  const onSubmit = (e: any) => {
-    e.preventDefault()
+  const onSubmit = () => {
     const { chat } = getValues()
     clearErrors(['chat'])
 
-    // if (chat?.trim() && chatData) {
+    console.log('chat', chat)
+    // if (chat?.trim() && chatData && channelData) {
     //   const savedChat = chat
-
     //   mutateChat((prevChatData) => {
     //     prevChatData?.[0].unshift({
-    //       id: (chatData[0][0]?.id || 0) + 1,
+    //       id: (chatData[0][0]?.id || 0) + 1,       
     //       content: savedChat,
-    //       SenderId: myData?.id,
-    //       Sender: myData,
-    //       ReceiverId: userData?.id,
-    //       Receiver: userData,
+    //       UserId: myData.id,
+    //       User: myData,
+    //       ChannelId: channelData.id,
+    //       Channel: channelData,
     //       createdAt: new Date(),
     //     })
-
     //     return prevChatData
+    //   }, false)
+    //     .then(() => {
+    //       reset({ chat: '' })
+    //       scrollbarRef.current?.scrollToBottom()
+    //     })
+    //   axios
+    //     .post(`/api/workspaces/${workspace}/channels/${channel}/chats`, {
+    //       content: chat,
+    //     })
+    //     .then(() => {
+    //       revalidate()
+    //     })
+    //     .catch(console.error)
+    // }
 
-    //   }, false).then(() => {
-
-    //     reset({ chat: '' })
-
-    //     localStorage.setItem(`${workspace}-${id}`, new Date().getTime().toString())
-
-    //     // if (scrollbarRef.current) {
-    //     //   console.log('scrollToBottom!', scrollbarRef.current?.getValues())
-    //     //   scrollbarRef.current.scrollToBottom()
-    //     // }
-    //   })
     axios
-      .post(`/api/workspaces/${workspace}/dms/${id}/chats`, {
+      .post(`/api/workspaces/${workspace}/channels/${channel}/chats`, {
         content: chat,
       })
+      .then(() => {
+        mutateChat()
+      })
       .catch(console.error)
-    // }
-    reset({ chat: '' })
   }
 
   return (

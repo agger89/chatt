@@ -39,7 +39,8 @@ interface ChatProps {
 const Chat: FC<ChatProps> = ({ chat }) => {
   const { workspace } = useParams<{ workspace: string; channel: string }>()
   const { data: myData } = useSWR<any>('/api/users', fetcher)
-  const user = chat.Sender
+
+  const user = 'Sender' in chat ? chat.Sender : chat.User;
   const senderID = chat.SenderId
 
   const me = myData.id === senderID
@@ -53,7 +54,7 @@ const Chat: FC<ChatProps> = ({ chat }) => {
       </Box>
       <Box>
         <Box css={contentInfoBlockStyle}>
-          <span>{user.nickname},</span>{" "}
+          <span>{user?.nickname},</span>{" "}
           <span>{dayjs(chat.createdAt).format('h:mm A')}</span>
         </Box>
         <p css={contentStyle} style={{ backgroundColor: !me ? '#476EEE' : '#2E334D' }}>{chat.content}</p>

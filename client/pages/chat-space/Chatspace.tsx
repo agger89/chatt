@@ -5,8 +5,9 @@ import useSWR from 'swr'
 import fetcher from 'utils/fetch'
 import { css } from '@emotion/core'
 import { Box } from '@material-ui/core'
-import { ChatUserList } from 'components/ChatUserList'
-import ChatMessage from 'components/ChatMessage/ChatMessage'
+import ChatList from 'components/ChatList/ChatList'
+import GroupChat from 'components/GroupChat/GroupChat'
+import DirectChat from 'components/DirectChat/DirectChat'
 import useSocket from 'hooks/useSocket'
 import Sidebar from 'components/Sidebar/Sidebar'
 
@@ -36,14 +37,17 @@ const Chatspace = () => {
   }, [socket, user, channelData])
 
   if (user === false) {
-    return <Redirect to="/login" />;
+    return <Redirect to="/login" />
   }
 
   return (
     <Box css={rootStyle}>
       <Sidebar user={user} mutateUser={mutate} />
-      <ChatUserList user={user} />
-      <Route path="/workspace/:workspace/dm/:id" component={ChatMessage} />
+      <ChatList user={user} />
+      <Switch>
+        <Route path="/workspace/:workspace/channel/:channel" component={GroupChat} />
+        <Route path="/workspace/:workspace/dm/:id" component={DirectChat} />
+      </Switch>
     </Box>
   )
 }
