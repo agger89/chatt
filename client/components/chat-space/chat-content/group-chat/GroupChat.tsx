@@ -46,7 +46,6 @@ const GroupChat = () => {
     fetcher,
   )
 
-  console.log('channelMembersData', channelMembersData)
   const [modalIsOpen, setModalIsOpen] = useState(false)
 
   const scrollbarRef = useRef<any>(null)
