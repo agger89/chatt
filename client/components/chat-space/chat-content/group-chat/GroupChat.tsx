@@ -8,9 +8,9 @@ import useSocket from 'hooks/useSocket'
 import { css } from '@emotion/core'
 import fetcher from 'utils/fetch'
 import ChatHeader from '../ChatHeader'
+import ChatMessage from '../chat-message/ChatMessage'
 import ChatInput from '../input/ChatInput'
-import ChatList from '../ChatList'
-import InviteGroupChatModal from 'components/InviteGroupChatModal'
+// import InviteGroupChatModal from 'components/InviteGroupChatModal'
 import { Typography } from '@material-ui/core'
 
 const rootStyle = css`
@@ -106,7 +106,7 @@ const GroupChat = () => {
         <span css={headerTitleStyle}>단톡방</span>
         <span css={headerSubTitleStyle}>({channelMembersData?.length}명)</span>
       </ChatHeader>
-      <ChatList
+      <ChatMessage
         scrollbarRef={scrollbarRef}
         setSize={setSize}
         chatData={chatData}

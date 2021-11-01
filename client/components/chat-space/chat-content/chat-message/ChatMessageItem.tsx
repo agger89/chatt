@@ -1,11 +1,9 @@
 import React, { FC, memo } from 'react'
-import useSWR from 'swr'
-import fetcher from 'utils/fetch'
 import { css } from '@emotion/core'
 import { Box } from '@material-ui/core'
 import { useParams } from 'react-router-dom'
 import dayjs from 'dayjs'
-import ProfileImage from 'components/ProfileImage'
+import ProfileImage from '../../ProfileImage'
 
 const rootStyle = css`
   display: flex;
@@ -32,21 +30,18 @@ const contentStyle = css`
   color: #fff;
 `
 
-interface ChatProps {
+interface ChatMessageItemProps {
   chat: any
 }
 
-const Chat: FC<ChatProps> = ({ chat }) => {
+const ChatMessageItem: FC<ChatMessageItemProps> = ({ chat }) => {
   const { workspace } = useParams<{ workspace: string; channel: string }>()
-  const { data: myData } = useSWR<any>('/api/users', fetcher)
 
   const user = 'Sender' in chat ? chat.Sender : chat.User;
   const senderID = chat.SenderId
 
-  const me = myData.id === senderID
-
   return (
-    <Box css={rootStyle} style={{ justifyContent: !me ? 'flex-end' : 'initial' }}>
+    <Box css={rootStyle}>
       <Box css={profileBlockStyle}>
         <ProfileImage user={{
           email: user?.email, nickname: user?.nickname,
@@ -57,10 +52,10 @@ const Chat: FC<ChatProps> = ({ chat }) => {
           <span>{user?.nickname},</span>{" "}
           <span>{dayjs(chat.createdAt).format('h:mm A')}</span>
         </Box>
-        <p css={contentStyle} style={{ backgroundColor: !me ? '#476EEE' : '#2E334D' }}>{chat.content}</p>
+        <p css={contentStyle}>{chat.content}</p>
       </Box>
     </Box>
   );
 };
 
-export default memo(Chat);
+export default memo(ChatMessageItem)

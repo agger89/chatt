@@ -42,11 +42,11 @@ const buttonStyle = css`
   color: #fff !important;
 `
 
-interface ChatspaceProps {
+interface ChatspaceListProps {
   user: any
 }
 
-const Chatspace: FC<ChatspaceProps> = ({ user }) => {
+const ChatspaceList: FC<ChatspaceListProps> = ({ user }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
 
   const handleOpenModal = () => {
@@ -68,4 +68,4 @@ const Chatspace: FC<ChatspaceProps> = ({ user }) => {
   )
 }
 
-export default Chatspace
+export default ChatspaceList

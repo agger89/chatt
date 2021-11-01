@@ -5,11 +5,10 @@ import useSWR from 'swr'
 import fetcher from 'utils/fetch'
 import { css } from '@emotion/core'
 import { Box } from '@material-ui/core'
-import ChatList from 'components/ChatList/ChatList'
-import GroupChat from 'components/GroupChat/GroupChat'
-import DirectChat from 'components/DirectChat/DirectChat'
+import ChannelList from 'components/chat-space/channel-list/ChannelList'
+import { GroupChat, DirectChat } from 'components/chat-space/chat-content'
 import useSocket from 'hooks/useSocket'
-import Sidebar from 'components/Sidebar/Sidebar'
+import Sidebar from 'components/chat-space/sidebar/Sidebar'
 
 const rootStyle = css`
   width: 100%;
@@ -43,7 +42,7 @@ const Chatspace = () => {
   return (
     <Box css={rootStyle}>
       <Sidebar user={user} mutateUser={mutate} />
-      <ChatList user={user} />
+      <ChannelList user={user} />
       <Switch>
         <Route path="/workspace/:workspace/channel/:channel" component={GroupChat} />
         <Route path="/workspace/:workspace/dm/:id" component={DirectChat} />

@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react'
 import axios from 'axios'
 import { css } from '@emotion/core'
 import { Box, Dialog, Button } from '@material-ui/core'
-import ProfileImage from 'components/ProfileImage'
+import ProfileImage from '../../ProfileImage'
 
 const rootStyle = css`
   display: inline-block;
@@ -30,13 +30,12 @@ const logoutTextStyle = css`
   cursor: pointer;
 `
 
-
-interface ProfileProps {
+interface SidebarProfileProps {
   mutateUser: () => void
   user: any
 }
 
-const Profile: FC<ProfileProps> = ({ mutateUser, user }) => {
+const SidebarProfile: FC<SidebarProfileProps> = ({ mutateUser, user }) => {
   const [dialogIsOpen, setDialogIsOpen] = useState(false)
 
   const handleDialogOpen = () => {
@@ -81,4 +80,4 @@ const Profile: FC<ProfileProps> = ({ mutateUser, user }) => {
   )
 }
 
-export default Profile
+export default SidebarProfile

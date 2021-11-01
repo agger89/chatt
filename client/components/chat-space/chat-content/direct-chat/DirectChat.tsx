@@ -9,8 +9,8 @@ import { css } from '@emotion/core'
 import useSocket from 'hooks/useSocket'
 import fetcher from 'utils/fetch'
 import ChatHeader from '../ChatHeader'
+import ChatMessage from '../chat-message/ChatMessage'
 import ChatInput from '../input/ChatInput'
-import ChatList from '../ChatList'
 import { Typography } from '@material-ui/core';
 
 const rootStyle = css`
@@ -107,7 +107,7 @@ const DirectChat: FC = () => {
         <img src={gravatar.url(user?.email, { s: '30px', d: 'retro' })} alt={user?.nickname} css={headerImageStyle} />
         <span css={headerSubTitleStyle}>{user?.nickname}</span>
       </ChatHeader>
-      <ChatList
+      <ChatMessage
         scrollbarRef={scrollbarRef}
         setSize={setSize}
         chatData={chatData}

@@ -1,8 +1,8 @@
 import React, { FC } from 'react'
 import { css } from '@emotion/core'
 import { Box, Dialog, Button } from '@material-ui/core'
-import Chatspace from './components/Chatspace'
-import Profile from './components/Profile'
+import ChatspaceList from './components/chat-space-list/ChatspaceList'
+import Profile from './components/SidebarProfile'
 
 const rootStyle = css`
   display: flex;
@@ -24,7 +24,7 @@ const Sidebar: FC<SidebarProps> = ({ user, mutateUser }) => {
   return (
     <Box css={rootStyle}>
       <div />
-      <Chatspace user={user} />
+      <ChatspaceList user={user} />
       <Profile mutateUser={mutateUser} user={user} />
     </Box>
   )

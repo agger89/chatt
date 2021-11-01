@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { css } from '@emotion/core'
 import { Box } from '@material-ui/core'
-import ChannelList from './components/ChannelList'
+import GroupMessageList from './components/GroupMessageList'
 import DirectMessageList from './components/DirectMessageList'
 
 const rootStyle = css`
@@ -13,18 +13,18 @@ const rootStyle = css`
   border-right: 2px solid #2E334D;
 `
 
-interface ChatUserListProps {
+interface ChannelListProps {
   user: any
 }
 
-const ChatUserList: FC<ChatUserListProps> = ({ user }) => {
+const ChannelList: FC<ChannelListProps> = ({ user }) => {
 
   return (
     <Box css={rootStyle}>
-      <ChannelList />
+      <GroupMessageList />
       <DirectMessageList user={user} />
     </Box>
   )
 }
 
-export default ChatUserList
+export default ChannelList

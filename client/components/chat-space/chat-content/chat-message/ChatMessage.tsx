@@ -2,8 +2,7 @@ import React, { FC, useCallback } from 'react'
 import { css } from '@emotion/core'
 import { Scrollbars } from 'react-custom-scrollbars-2'
 import buildSection from 'utils/buildSection'
-import ChatContent from './ChatContent'
-import { PAGE_SIZE } from './DirectChat/DirectChat'
+import ChatItem from './ChatMessageItem'
 
 const rootStyle = css`
   display: flex;
@@ -24,7 +23,6 @@ const dateBlockStyle = css`
   justify-content: center;
   flex: 1;
   width: 100%;
-  
 `
 
 const dateStyle = css`
@@ -38,13 +36,14 @@ const dateStyle = css`
   color: #666B85;
 `
 
-interface ChatListProps {
+interface ChatMessageProps {
   scrollbarRef: any
   setSize: (value: any) => any
   chatData: any
 }
 
-const ChatList: FC<ChatListProps> = ({ scrollbarRef, setSize, chatData }) => {
+export const PAGE_SIZE = 20
+const ChatMessage: FC<ChatMessageProps> = ({ scrollbarRef, setSize, chatData }) => {
   if (!chatData) {
     return null
   }
@@ -78,7 +77,7 @@ const ChatList: FC<ChatListProps> = ({ scrollbarRef, setSize, chatData }) => {
                 <span css={dateStyle}>{date}</span>
               </div>
               {chats.map((chat, idx) => (
-                <ChatContent chat={chat} key={idx} />
+                <ChatItem chat={chat} key={idx} />
               ))}
             </div>
           )
@@ -88,4 +87,4 @@ const ChatList: FC<ChatListProps> = ({ scrollbarRef, setSize, chatData }) => {
   )
 }
 
-export default ChatList
+export default ChatMessage

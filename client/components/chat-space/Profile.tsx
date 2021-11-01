@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import useSWR from 'swr'
 import { css } from '@emotion/core'
 import fetcher from 'utils/fetch'
-import ProfileImage from 'components/ProfileImage'
+import ProfileImage from './ProfileImage'
 
 const rootStyle = css`
   display: flex;
