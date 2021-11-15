@@ -16,6 +16,7 @@ const signupBlock = css`
 `
 
 const App = () => {
+  console.log(1)
   return (
     <div css={signupBlock}>
       <Switch>
